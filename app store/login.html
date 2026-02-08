@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- ===== SEO BASIC ===== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dori Store Free App Store | Download Paid Apps for Free</title>
+
+  <meta name="description" content="Dori Store is a free app store by Dori Technology where users can download premium and paid apps for free. Dori Technology pays the developers so users enjoy apps legally and safely.">
+
+  <meta name="keywords" content="Dori Store, Free App Store, Download Paid Apps Free, Premium Apps Free, Dori Technology, Free Android Apps, App Store Alternative">
+
+  <meta name="author" content="Dori Technology">
+  <meta name="robots" content="index, follow">
+
+  <!-- ===== OPEN GRAPH (SOCIAL SEO) ===== -->
+  <meta property="og:title" content="Dori Store Free App Store by Dori Technology">
+  <meta property="og:description" content="Download paid and premium apps for free on Dori Store. Powered by Dori Technology. Safe, secure and user-friendly app marketplace.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="Dori Technology.png">
+  <meta property="og:site_name" content="Dori Store">
+
+  <!-- ===== TWITTER SEO ===== -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dori Store Free App Store">
+  <meta name="twitter:description" content="Get paid apps for free legally. Dori Technology pays for your apps on Dori Store.">
+  <meta name="twitter:image" content="Dori Technology.png">
+
+  <!-- ===== APP / BRANDING ===== -->
+  <meta name="application-name" content="Dori Store">
+  <meta name="theme-color" content="#FFD700">
+
+  <!-- ===== STRUCTURED DATA (GOOGLE) ===== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Dori Store",
+    "operatingSystem": "Android, Web",
+    "applicationCategory": "ApplicationStore",
+    "description": "Dori Store is a free app store by Dori Technology that allows users to download paid apps for free while developers are paid by Dori Technology.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Dori Technology",
+      "logo": "Dori Technology.png"
+    }
+  }
+  </script>
+
+  <!-- ===== ORIGINAL CODE BELOW (UNCHANGED) ===== -->
+
+  <style>
+    body {
+      background:black;
+      color:white;
+      text-align:center;
+      font-family:Arial;
+    }
+
+    h1 { color:gold }
+
+    input, button {
+      display:block;
+      margin:10px auto;
+      padding:10px;
+      width:260px;
+      background:#272727;
+      color:white;
+      border:1px solid #555;
+      border-radius:10px;
+    }
+
+    button {
+      background:gold;
+      color:black;
+      cursor:pointer;
+      border-radius:20px;
+      font-weight:bold;
+    }
+
+    .btn2 { background:#444; color:white }
+
+    /* ---------- CAPTCHA BOX ---------- */
+    .captcha-box {
+      width:300px;
+      margin:15px auto;
+      background:#272727;
+      color:#fff;
+      border-radius:6px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px;
+      box-sizing:border-box;
+      border:1px solid #444;
+    }
+
+    .captcha-left {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:14px;
+    }
+
+    .captcha-left input {
+      width:18px;
+      height:18px;
+      cursor:pointer;
+    }
+
+    .captcha-logo {
+      text-align:center;
+      font-size:11px;
+      color:#ccc;
+    }
+
+    .captcha-logo img {
+      width:32px;
+      height:32px;
+      display:block;
+      margin:0 auto 4px;
+    }
+
+    #captchaMsg {
+      font-size:13px;
+      margin-top:6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Dori Store</h1>
+  <p>Login or Register</p>
+
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <!-- CAPTCHA -->
+  <div class="captcha-box">
+    <div class="captcha-left">
+      <input type="checkbox" id="humanCheck">
+      <span>I’m not a robot</span>
+    </div>
+
+    <div class="captcha-logo">
+      <img src="Dori Technology.png" alt="Dori Logo">
+      Dori CAPTCHA
+    </div>
+  </div>
+
+  <div id="captchaMsg"></div>
+
+  <button onclick="login()">Login</button>
+  <button class="btn2" onclick="register()">Register</button>
+
+  <p id="msg"></p>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBtHG6AwXIqp3yVHRSKT-KDIzNW9L_GSGA",
+      authDomain: "peoples-user-data.firebaseapp.com",
+      projectId: "peoples-user-data",
+      appId: "1:816888596794:web:4625533b60ef2b07536803"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const msg = t => document.getElementById("msg").innerText = t;
+    const capMsg = t => document.getElementById("captchaMsg").innerText = t;
+    const email = () => document.getElementById("email").value.trim();
+    const pass  = () => document.getElementById("password").value;
+
+    /* ---------- CAPTCHA LOGIC ---------- */
+    let pageLoad = Date.now();
+    let mouseMoved = false;
+    let verified = false;
+
+    window.addEventListener("mousemove", () => mouseMoved = true);
+
+    document.getElementById("humanCheck").addEventListener("change", e => {
+      const time = Date.now() - pageLoad;
+
+      if (time < 2000 || !mouseMoved) {
+        capMsg(" Verification failed");
+        e.target.checked = false;
+        return;
+      }
+
+      verified = true;
+      capMsg(" Verified");
+    });
+
+    function captchaOk() {
+      if (!verified) {
+        msg(" Please verify captcha");
+        return false;
+      }
+      return true;
+    }
+
+    function resetCaptcha() {
+      verified = false;
+      mouseMoved = false;
+      pageLoad = Date.now();
+      document.getElementById("humanCheck").checked = false;
+      capMsg("");
+    }
+
+    onAuthStateChanged(auth, user => {
+      if (user) window.location.href = "home.html";
+    });
+
+    window.login = async () => {
+      if (!captchaOk()) return;
+      try {
+        await signInWithEmailAndPassword(auth, email(), pass());
+        window.location.href = "store.html";
+      } catch (e) {
+        resetCaptcha();
+        msg("❌ " + e.message);
+      }
+    };
+
+    window.register = async () => {
+      if (!captchaOk()) return;
+      try {
+        await createUserWithEmailAndPassword(auth, email(), pass());
+        window.location.href = "home.html";
+      } catch (e) {
+        resetCaptcha();
+        msg("❌ " + e.message);
+      }
+    };
+  </script>
+
+</body>
+</html>
